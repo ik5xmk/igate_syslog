@@ -41,9 +41,13 @@ def extract_message_after_pattern(message):
     # TX / MESSAGE / IZ5YBK-10 ---> IK5XMK-15:Qwerty{49
     match = re.search(FILTER_PATTERN, message)
     if match:
-        if ( (len(FILTER_CALL)>1) & (FILTER_CALL in message) ):
+        if ( (len(FILTER_CALL)>1) & (FILTER_CALL in message) ): # c'è il secondo filtro e lo trova
             return message[message.index(FILTER_CALL):].strip()
-        return message[match.end():].strip()  # Prende il testo dopo il pattern
+
+        if (len(FILTER_CALL)>1): # c'è il secondo filtro e NON lo trova
+            return None
+
+        return message[match.end():].strip()  # NON c'è il secondo filtro impostato, ma il pattern coincide
     return None
 
 def main():
